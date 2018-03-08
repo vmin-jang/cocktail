@@ -1,3 +1,127 @@
-<html>
-Hello
+<!DOCTYPE HTML>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8" />
+        <!-- Cache 방지 -->
+        <meta http-equiv="Pragma" content="no-cache"> 
+        <meta http-equiv="Cache-Control" content="no-cache">
+        <meta http-equiv="Expires" content="-1">
+
+      <title>주사위 한개 던지기</title>
+        <script lang="javascript">
+            var cwidth=400;         //캔버스 넓이
+            var cheight=300;        //캔버스 높이
+            var dicex=50;           //주사위 x좌표
+            var dicey=50;           //주사위 y좌표
+            var dicewidth=100;      //주사위 넓이
+            var diceheight=100;     //주사위 높이
+            var dotradion=6;        //주사위점 크기
+            var ctx;                //캔버스 컨텍스트 저장 변수
+
+            //button onClick 이벤트
+            function throwdice(){
+                var ch = 1+Math.floor(Math.random()*6);
+                drawface(ch);
+                
+                dicex = dicex + 150;
+                ch = 1+Math.floor(Math.random()*6);
+                drawface(ch);
+                
+                dicex = 50;
+            }
+
+            //주사위 면 그리기
+            function drawface(n){
+                ctx = document.getElementById('canvas').getContext('2d');
+                ctx.lineWidth=5;
+                ctx.clearRect(dicex,dicey, dicewidth, diceheight);
+                ctx.strokeStyle="black";
+                ctx.strokeRect(dicex,dicey, dicewidth, diceheight);
+                ctx.fillStyle="#009966";
+                //ctx.fillStyle="rgb(255,224,140)";
+                
+                switch(n){
+                    case 1:
+                        draw1();
+                        break;
+                    case 2:
+                        draw2();
+                        break;
+                    case 3:
+                        draw2();
+                        draw1();
+                        break;
+                    case 4:
+                        draw4();
+                        break;
+                    case 5:
+                        draw4();
+                        draw1();
+                        break;
+                    case 6:
+                        draw4();
+                        draw2mid();
+                        break;
+                        }
+            }
+            
+            //가운데 점 하나 그리기
+            function draw1(){
+                var dotx = dicex+0.5*dicewidth;
+                var doty = dicey+0.5*diceheight;
+                drawdot(dotx, doty);
+            }
+            
+            //점 그리기
+            function drawdot(dotx, doty){
+                ctx.beginPath();
+                ctx.arc(dotx,doty,dotradion,0,Math.PI*2,true);
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            // 점 두개 그리기
+            function draw2(){
+                var dotx = dicex+3*dotradion;
+                var doty = dicey+3*dotradion;
+                drawdot(dotx, doty);
+                
+                dotx = dicex+dicewidth-3*dotradion;
+                doty = dicey+diceheight-3*dotradion;
+                drawdot(dotx, doty);
+            }
+
+            // 점 4개 그리기
+            function draw4(){
+                draw2();
+                
+                var dotx = dicex+3*dotradion;
+                var doty = dicey+diceheight-3*dotradion;
+                drawdot(dotx, doty);
+                
+                dotx = dicex+dicewidth-3*dotradion;
+                doty = dicey+3*dotradion;
+                drawdot(dotx, doty);
+            }
+            
+            // 중앙에 점 두개 그리기
+            function draw2mid(){
+                var dotx = dicex+3*dotradion;
+                var doty = dicey+0.5*diceheight;
+                drawdot(dotx, doty);
+                
+                dotx = dicex+dicewidth-3*dotradion;
+                doty = dicey+0.5*diceheight;
+                drawdot(dotx, doty);
+            }
+            
+        </script>
+    </head>
+    <body>
+        <canvas id="canvas" width="400" height="300" >
+            이 브라우저는 HTML5의 canvas 요소를 지원하지 않습니다.
+        </canvas>
+        <br/>
+        <button onClick="throwdice();">주사위 던지기</button>
+    </body>
 </html>
